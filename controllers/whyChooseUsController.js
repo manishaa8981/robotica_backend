@@ -57,7 +57,8 @@ const getWhyChooseUs = async (req, res) => {
 const addItem = async (req, res) => {
   try {
     const { mainId } = req.params;
-    const { title, description } = req.body;
+    const { title, description, duration, internship, outcomes, seats, date } =
+      req.body;
     const image = req.file ? req.file.filename : null;
 
     if (!image)

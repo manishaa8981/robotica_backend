@@ -30,7 +30,7 @@ app.use("/uploads", (req, res, next) => {
 connectDB();
 
 const port = process.env.PORT;
-app.use('/images', express.static('public/images'));
+app.use("/images", express.static("public/images"));
 
 app.use("/api/auth", require("./routes/userRoutes"));
 
@@ -40,7 +40,10 @@ app.use("/api/team", require("./routes/teamRoutes"));
 
 app.use("/api/testimonial", require("./routes/testimonialRoutes"));
 
-app.use("/api/institutionprofile", require("./routes/institutionProfileRoutes"));
+app.use(
+  "/api/institutionprofile",
+  require("./routes/institutionProfileRoutes")
+);
 
 app.use("/api/aboutus", require("./routes/aboutUsRoutes"));
 
@@ -70,20 +73,18 @@ app.use("/api/category", require("./routes/categoryRoutes"));
 
 app.use("/api/gallery", require("./routes/galleryRoutes"));
 
-app.use("/api/news", require("./routes/newsRoutes"))
+app.use("/api/news", require("./routes/newsRoutes"));
 
-app.use("/api/group", require("./routes/groupRoutes"))
+app.use("/api/group", require("./routes/groupRoutes"));
 
-app.use("/api/faqs",  require("./routes/faqRoutes"));
+app.use("/api/faqs", require("./routes/faqRoutes"));
 
-app.use("/api/signaturelabs",  require("./routes/signatureLabsRoutes"));
+app.use("/api/signaturelabs", require("./routes/signatureLabsRoutes"));
 
 app.use("/api/admissions", require("./routes/admissionsRoutes"));
-
 
 app.listen(port, () => {
   console.log(`Server is listening on ${port}`);
 });
 
 module.exports = app;
-
