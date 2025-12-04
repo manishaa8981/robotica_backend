@@ -27,7 +27,7 @@ const initializeAdminAccount = async () => {
     const hashedPassword = await bcrypt.hash("NIiz$19&4dfbv../4782#8981", 10);
 
     const newUser = new users({
-      name: "TechPaaila Admin",
+      name: "Robotica Admin",
       email: "robotica.admin@gmail.com",
       password: hashedPassword,
       role: "admin",
