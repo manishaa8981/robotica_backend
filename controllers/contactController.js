@@ -2,43 +2,99 @@ const Contact = require("../models/contactModel");
 const { responseHandler } = require("../helper/responseHandler");
 const { sendEmail } = require("../utils/sendEmail");
 
+// const addContactQuery = async (req, res) => {
+//     try {
+//         const { firstName, lastName, email, mobileNumber, message } = req.body;
+
+//         if (!firstName || !lastName || !email || !mobileNumber || !message) {
+//             return responseHandler(res, 400, false, "All fields are required.");
+//         }
+
+//         const newContact = new Contact({
+//             firstName,
+//             lastName,
+//             email,
+//             mobileNumber,
+//             message,
+//         });
+
+//         await newContact.save();
+
+//         // Send email to admin
+//         await sendEmail({
+//             email: process.env.ADMIN_EMAIL, // Admin email
+//             subject: "New Contact Query",
+//             template: "contactTemplate", // Reference template name
+//             data: {
+//                 firstName,
+//                 lastName,
+//                 email,
+//                 mobileNumber,
+//                 message,
+//             },
+//         });
+
+//         return responseHandler(res, 201, true, "Email has been sent.", newContact);
+//     } catch (error) {
+//         console.log("Error in addContactQuery:", error);
+//         return responseHandler(res, 500, false, "An error occurred while processing your request.");
+//     }
+// };
 const addContactQuery = async (req, res) => {
-    try {
-        const { firstName, lastName, email, mobileNumber, message } = req.body;
+  try {
+    const { firstName, lastName, email, mobileNumber, message } = req.body;
 
-        if (!firstName || !lastName || !email || !mobileNumber || !message) {
-            return responseHandler(res, 400, false, "All fields are required.");
-        }
-
-        const newContact = new Contact({
-            firstName,
-            lastName,
-            email,
-            mobileNumber,
-            message,
-        });
-
-        await newContact.save();
-
-        // Send email to admin
-        await sendEmail({
-            email: process.env.ADMIN_EMAIL, // Admin email
-            subject: "New Contact Query",
-            template: "contactTemplate", // Reference template name
-            data: {
-                firstName,
-                lastName,
-                email,
-                mobileNumber,
-                message,
-            },
-        });
-
-        return responseHandler(res, 201, true, "Email has been sent.", newContact);
-    } catch (error) {
-        console.log("Error in addContactQuery:", error);
-        return responseHandler(res, 500, false, "An error occurred while processing your request.");
+    if (!firstName || !lastName || !email || !mobileNumber || !message) {
+      return responseHandler(res, 400, false, "All fields are required.");
     }
+
+    const newContact = new Contact({
+      firstName,
+      lastName,
+      email,
+      mobileNumber,
+      message,
+    });
+
+    // Save to DB
+    await newContact.save();
+
+    // Try to send email, but don't break if it fails
+    try {
+      await sendEmail({
+        email: process.env.ADMIN_EMAIL, // Admin email
+        subject: "New Contact Query",
+        template: "contactTemplate",
+        data: {
+          firstName,
+          lastName,
+          email,
+          mobileNumber,
+          message,
+        },
+      });
+    } catch (emailError) {
+      console.log("Error sending contact email:", emailError);
+      // You could also log to a monitoring service here
+    }
+
+    // Always send SUCCESS if save went fine
+    return responseHandler(
+      res,
+      201,
+      true,
+      "Thank you! Your message has been received.",
+      newContact
+    );
+  } catch (error) {
+    console.log("Error in addContactQuery:", error);
+    return responseHandler(
+      res,
+      500,
+      false,
+      "An error occurred while processing your request."
+    );
+  }
 };
 
 const getAllContacts = async (req, res) => {
