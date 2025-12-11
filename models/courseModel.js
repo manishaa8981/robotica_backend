@@ -25,7 +25,7 @@ const courseSchema = new mongoose.Schema({
   description: { type: String, required: true },
   level: {
     type: [String],
-    enum: ["Class 11", "Class 12"],
+    enum: ["Class 8,9,10", "Class 11,12", "Bachlore", "Diploma"],
     required: true,
   },
   modules: {

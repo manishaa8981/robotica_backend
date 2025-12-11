@@ -17,11 +17,16 @@ const createCourse = async (req, res) => {
     const { title, description, level, modules } = req.body;
 
     if (!title || !description || !modules || !level) {
-      return responseHandler(res, 400, false, "Please fill all required fields");
+      return responseHandler(
+        res,
+        400,
+        false,
+        "Please fill all required fields"
+      );
     }
 
     const levels = Array.isArray(level) ? level : [level];
-    const validLevels = ["Class 11", "Class 12"];
+    const validLevels = ["Class 8,9,10", "Class 11,12", "Bachlore", "Diploma"];
     const invalidLevels = levels.filter((lvl) => !validLevels.includes(lvl));
     if (invalidLevels.length > 0) {
       return responseHandler(res, 400, false, "Invalid level(s) provided");
@@ -53,13 +58,24 @@ const createCourse = async (req, res) => {
 
     await course.save();
 
-    return responseHandler(res, 201, true, "Course created successfully", course);
+    return responseHandler(
+      res,
+      201,
+      true,
+      "Course created successfully",
+      course
+    );
   } catch (error) {
     console.error("Error creating course:", error);
-    return responseHandler(res, 500, false, "Error creating course", error.message);
+    return responseHandler(
+      res,
+      500,
+      false,
+      "Error creating course",
+      error.message
+    );
   }
 };
-
 
 // Update course
 const updateCourse = async (req, res) => {
@@ -73,7 +89,12 @@ const updateCourse = async (req, res) => {
     }
 
     if (!title || !description || !modules || !level) {
-      return responseHandler(res, 400, false, "Please fill all required fields");
+      return responseHandler(
+        res,
+        400,
+        false,
+        "Please fill all required fields"
+      );
     }
 
     const levels = Array.isArray(level) ? level : [level];
@@ -112,13 +133,24 @@ const updateCourse = async (req, res) => {
 
     await course.save();
 
-    return responseHandler(res, 200, true, "Course updated successfully", course);
+    return responseHandler(
+      res,
+      200,
+      true,
+      "Course updated successfully",
+      course
+    );
   } catch (error) {
     console.error("Error updating course:", error);
-    return responseHandler(res, 500, false, "Error updating course", error.message);
+    return responseHandler(
+      res,
+      500,
+      false,
+      "Error updating course",
+      error.message
+    );
   }
 };
-
 
 // Get all courses
 const getAllCourses = async (req, res) => {
@@ -142,7 +174,6 @@ const getCourseById = async (req, res) => {
     responseHandler(res, 500, false, "Error fetching course", error);
   }
 };
-
 
 // Delete course
 const deleteCourse = async (req, res) => {
@@ -177,6 +208,11 @@ const getCourseBySlug = async (req, res) => {
   }
 };
 
-
-
-module.exports = { createCourse, getAllCourses, getCourseById, deleteCourse, updateCourse, getCourseBySlug };
+module.exports = {
+  createCourse,
+  getAllCourses,
+  getCourseById,
+  deleteCourse,
+  updateCourse,
+  getCourseBySlug,
+};

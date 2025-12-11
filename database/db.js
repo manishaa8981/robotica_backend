@@ -24,7 +24,7 @@ const initializeAdminAccount = async () => {
       return;
     }
 
-    const hashedPassword = await bcrypt.hash("NIiz$19&4dfbv../4782#8981", 10);
+    const hashedPassword = await bcrypt.hash("Z[L-Lx+lPo3~#CSDj7]21H", 10);
 
     const newUser = new users({
       name: "Robotica Admin",

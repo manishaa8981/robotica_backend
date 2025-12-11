@@ -83,8 +83,12 @@ app.use("/api/signaturelabs", require("./routes/signatureLabsRoutes"));
 
 app.use("/api/admissions", require("./routes/admissionsRoutes"));
 
-app.get('/', (req, res) => {
-    res.send('Api is running....');
+app.use("/api/industry-partners", require("./routes/industryPartnerRoutes"));
+
+app.use("/api/applications", require("./routes/applicationsRoutes"));
+
+app.get("/", (req, res) => {
+  res.send("Api is running....");
 });
 
 app.listen(port, () => {
