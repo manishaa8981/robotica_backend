@@ -16,17 +16,31 @@ dotenv.config();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-const corsPolicy = {
-  origin: [
-    "https://admin.roboticainstitute.com",
-    "https://roboticainstitute.com",
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-  optionSuccessStatus: 200,
-};
-app.use(cors(corsPolicy));
+const corsPolicy = [
+  "https://roboticainstitute.com",
+  "https://www.roboticainstitute.com",
+  "https://admin.roboticainstitute.com",
+];
 
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow server-to-server & curl requests
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+// app.use(cors(corsPolicy));
+// app.options("*", cors());
 app.use("/uploads", (req, res, next) => {
   express.static(path.resolve(__dirname, "uploads"))(req, res, next);
 });
