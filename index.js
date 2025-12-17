@@ -17,7 +17,11 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 const corsPolicy = {
-  origin: true,
+  origin: [
+    "https://admin.roboticainstitute.com",
+    "https://roboticainstitute.com",
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   optionSuccessStatus: 200,
 };
